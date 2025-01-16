@@ -1,8 +1,6 @@
 library(tidyverse)
 library(rvest)
 library(stringi)
-url <- "https://www.unep.org/inc-plastic-pollution/session-4/statements"
-ht <-  read_html(url)
 
 
 extract_data <- function(nod){
@@ -25,7 +23,11 @@ extract_data <- function(nod){
     date <- str_extract(p_text, "\\d{2}/\\d{2}/\\d{4}")
     
     # Identify the nearest header (based on position)
-    header <- headers[cumsum(p_nodes[i] %>% html_nodes(xpath = "preceding-sibling::h5") %>% length())]
+    if(length(headers) > 0){
+      header <- headers[cumsum(p_nodes[i] %>% html_nodes(xpath = "preceding-sibling::h5") %>% length())]
+    } else{
+      header <- NA
+    }
     
     # Extract the paragraph text before links (outside <a> tags)
     if(length(p_nodes[i] %>% html_nodes("a")) > 1){
@@ -51,6 +53,10 @@ extract_data <- function(nod){
   df_out <- bind_rows(results)
   return(df_out)
 }
+
+
+url <- "https://www.unep.org/inc-plastic-pollution/session-4/statements"
+ht <-  read_html(url)
 
 group_states <- ht |> html_element("#GroupsStates div")
 df_group <- extract_data(group_states) |> 
