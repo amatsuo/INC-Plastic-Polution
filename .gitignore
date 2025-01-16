@@ -50,3 +50,7 @@ rsconnect/
 
 */.DS_Store
 .DS_Store
+ 
+ 
+cred/
+tmp_data/
