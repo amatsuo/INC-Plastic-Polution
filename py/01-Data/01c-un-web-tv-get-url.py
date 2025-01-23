@@ -9,8 +9,10 @@ from urllib.request import Request, urlopen
 import pandas as pd
 from time import sleep 
 
-RE_ENTRY_ID = re.compile(re.escape("/").join([
-    re.escape("https://webtv.un.org"),
+RE_ENTRY_ID = re.compile(r"https?"+
+    re.escape("/").join([
+    
+    re.escape("://webtv.un.org"),
     r"[a-z]{2}",
     "asset",
     r"k[a-z\d]+",

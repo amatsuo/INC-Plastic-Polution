@@ -126,6 +126,10 @@ def diarize_and_transcribe(input_file, output_dir):
 input_dir = "/home/akitaka/python_projects/inc/gen_trans/audio_data"  
 output_dir = "/home/akitaka/python_projects/inc/gen_trans/transcripts"  
 
+# input_dir = "/home/akitaka/python_projects/inc/gen_trans/additional_audio_files"  
+# output_dir = "/home/akitaka/python_projects/inc/gen_trans/additional_transcripts"  
+
+
 # Ensure the output directory exists
 os.makedirs(output_dir, exist_ok=True)
 

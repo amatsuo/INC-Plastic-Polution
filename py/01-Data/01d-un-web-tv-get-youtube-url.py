@@ -3,6 +3,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+from time import sleep
 
 multiline_string= """https://youtu.be/aD3cke8KrMc
 https://youtu.be/3G0N-Y8DeYA?si=7jG9bYKaMoy3S5rn
@@ -95,27 +96,28 @@ https://youtu.be/KJyStOb3RhA
 https://youtu.be/c8wjbRH0LB0
 https://youtu.be/rwNWK-ceGuI
 https://youtu.be/Qyszy1BKbPE
-https://www.youtube.com/unenvironmentprogramme
+https://www.youtube.com/watch?v=1fiohAv4jOo
 """
 url_list = multiline_string.splitlines()
 
 def get_youtube_title(youtube_link):
   print(f"Visiting YouTube link: {youtube_link}")
-youtube_response = requests.get(youtube_link)
-if youtube_response.status_code != 200:
-  print(f"Failed to fetch YouTube page: {youtube_response.status_code}")
-return(pd.DataFrame())
-# Parse the YouTube page
-youtube_soup = BeautifulSoup(youtube_response.text, 'html.parser')
-# Extract the title of the YouTube video
-title_tag = youtube_soup.find("meta", property="og:title")
-if title_tag:
-  video_title = title_tag.get("content", "No Title Found")
-print(f"Video Title: {video_title}")
-else:
-  video_title = ""
-print("Could not extract the video title.")
-return(pd.DataFrame({"url": youtube_link, "title": video_title}, index = [0]))
+  youtube_response = requests.get(youtube_link)
+  if youtube_response.status_code != 200:
+    print(f"Failed to fetch YouTube page: {youtube_response.status_code}")
+    return(pd.DataFrame())
+  # Parse the YouTube page
+  youtube_soup = BeautifulSoup(youtube_response.text, 'html.parser')
+  # Extract the title of the YouTube video
+  title_tag = youtube_soup.find("meta", property="og:title")
+  if title_tag:
+    video_title = title_tag.get("content", "No Title Found")
+    print(f"Video Title: {video_title}")
+  else:
+    video_title = ""
+    print("Could not extract the video title.")
+  sleep(3)
+  return(pd.DataFrame({"url": youtube_link, "title": video_title}, index = [0]))
 
 titles = [get_youtube_title(item) for item in url_list]
 
